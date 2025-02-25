@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>App Unity con Audio</title>
+    <style>
+        /* Ajuste de estilo para móviles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            background-color: #000;
+        }
+        
+        /* Estilo del botón de inicio */
+        .start-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 15px 30px;
+            font-size: 18px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .start-button:active {
+            transform: translate(-50%, -50%) scale(0.95);
+        }
+
+        /* Ocultar iframe hasta que el usuario toque el botón */
+        #unityApp {
+            display: none;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Botón de Inicio -->
+    <button class="start-button" id="startButton">Iniciar Audio</button>
+
+    <!-- Audio -->
+    <audio id="audioPlayer" src="https://drive.google.com/drive/folders/1BvmxzRastqdDtpHIcGgl7b37Red0AW-V?usp=drive_link" preload="auto" loop></audio>
+
+    <!-- Iframe para la App de Unity -->
+    <iframe 
+        id="unityApp"
+        src="https://drive.google.com/drive/u/0/my-drive"
+        allow="camera"
+        allowfullscreen>
+    </iframe>
+
+    <script>
+        const audio = document.getElementById('audioPlayer');
+        const startButton = document.getElementById('startButton');
+        const unityApp = document.getElementById('unityApp');
+
+        // Función para iniciar el audio y mostrar la app de Unity
+        const startApp = () => {
+            audio.play().then(() => {
+                // Oculta el botón y muestra el iframe
+                startButton.style.display = 'none';
+                unityApp.style.display = 'block';
+            }).catch(error => {
+                console.log('No se pudo reproducir el audio:', error);
+            });
+        };
+
+        // Evento al tocar el botón de inicio
+        startButton.addEventListener('click', startApp);
+
+        // Reintenta la reproducción si está pausado
+        window.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+            }
+        });
+    </script>
+</body>
+</html>
